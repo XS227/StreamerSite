@@ -1,6 +1,7 @@
 {
   "projectName": "Streamer Site Builder",
   "defaultProject": "projects/default/template",
+  "projectMeta": "projects/default/project.json",
   "language": "en",
   "publishPath": "public",
   "assetPaths": {
@@ -14,5 +15,8 @@
     "language": "en",
     "tips": true,
     "updater": false
-  }
+  },
+  "adminPassword": "",
+  "installed": false,
+  "firstRun": true
 }

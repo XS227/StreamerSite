@@ -6,6 +6,7 @@ class StreamerSiteBuilder {
     this.currentPage = null;
     this.pages = [];
     this.layersConfig = null;
+    this.projectMeta = null;
 
     this.iframe = document.getElementById("ssb-canvas");
     this.pagesListEl = document.getElementById("ssb-pages-list");
@@ -17,8 +18,18 @@ class StreamerSiteBuilder {
     await this.loadConfig();
     await this.loadDefaultProjectIfNeeded();
     this.bindUI();
+
     if (this.pages.length) {
-      this.loadPage(this.pages[0]); // load home page
+      const requestedPage = new URLSearchParams(window.location.search).get("page");
+      const normalizedRequest = requestedPage?.replace(/^\//, "");
+
+      const initialPage = requestedPage
+        ? this.pages.find((page) =>
+            page.file.endsWith(normalizedRequest) || page.file.endsWith(`/${normalizedRequest}`)
+          ) || this.pages[0]
+        : this.pages[0];
+
+      this.loadPage(initialPage); // load home page or requested page
     }
   }
 
@@ -32,25 +43,58 @@ class StreamerSiteBuilder {
     this.config = await configRes.json();
     this.layersConfig = await layersRes.json();
 
-    // Example: set project name
-    const projectNameEl = document.getElementById("ssb-current-project");
-    if (projectNameEl && this.config.projectName) {
-      projectNameEl.textContent = this.config.projectName;
-    }
+    this.setProjectName(this.config.projectName);
   }
 
   async loadDefaultProjectIfNeeded() {
-    // In a real setup this would be loaded from project.json
-    // For now we hard-code a single page: fjolsenbanden index.html
-    this.pages = [
-      {
-        id: "index",
-        title: "Home",
-        file: "../projects/default/template/index.html",
-        isHome: true,
-      },
-    ];
+    const projectMetaPath = this.config.projectMeta || "projects/default/project.json";
+    const resolvedMetaPath = projectMetaPath.startsWith("./")
+      ? projectMetaPath
+      : `./${projectMetaPath}`;
+
+    try {
+      const response = await fetch(resolvedMetaPath);
+
+      if (!response.ok) {
+        throw new Error(`Unable to load project meta: ${response.status}`);
+      }
+
+      this.projectMeta = await response.json();
+      const templatePath = this.projectMeta.templatePath || this.config.defaultProject || "projects/default/template";
+      const templateBase = templatePath.startsWith("./")
+        ? templatePath.replace(/\/$/, "")
+        : `./${templatePath.replace(/\/$/, "")}`;
+      const projectRoot = templateBase.replace(/\/[^/]+$/, "");
+
+      this.pages = (this.projectMeta.pages || []).map((page) => ({
+        ...page,
+        file: `${templateBase}/${page.file}`,
+        preview: page.preview ? `${projectRoot}/${page.preview}` : undefined,
+      }));
+
+      this.setProjectName(this.projectMeta.name || this.config.projectName);
+    } catch (error) {
+      console.error(error);
+      // Fallback to a single default page if project data cannot be loaded
+      this.pages = [
+        {
+          id: "index",
+          title: "Home",
+          file: "./projects/default/template/index.html",
+          isHome: true,
+        },
+      ];
+    }
+
     this.renderPagesList();
+  }
+
+  setProjectName(name) {
+    const projectNameEl = document.getElementById("ssb-current-project");
+
+    if (projectNameEl && name) {
+      projectNameEl.textContent = name;
+    }
   }
 
   renderPagesList() {
