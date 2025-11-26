@@ -63,6 +63,11 @@ function recursiveCopy(string $src, string $dst): void
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
+    $vippsEnabled = isset($_POST['vipps_enable']);
+    $vippsMerchantSerial = trim($_POST['vipps_merchant'] ?? '');
+    $vippsClientId = trim($_POST['vipps_client_id'] ?? '');
+    $vippsClientSecret = trim($_POST['vipps_client_secret'] ?? '');
+    $vippsMembershipPrice = trim($_POST['vipps_membership_price'] ?? '');
 
     if ($password === '' || $confirmPassword === '') {
         $errors[] = 'Admin-passord må fylles ut.';
@@ -70,8 +75,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Passordene må være like.';
     }
 
+    if ($vippsEnabled) {
+        if ($vippsMerchantSerial === '' || $vippsClientId === '' || $vippsClientSecret === '') {
+            $errors[] = 'Fyll ut alle Vipps-feltene for medlemskap.';
+        }
+
+        if ($vippsMembershipPrice !== '' && !is_numeric($vippsMembershipPrice)) {
+            $errors[] = 'Medlemspris må være et tall (NOK).';
+        }
+    }
+
     if (empty($errors)) {
         try {
+            if (!$vippsEnabled) {
+                $vippsMerchantSerial = '';
+                $vippsClientId = '';
+                $vippsClientSecret = '';
+                $vippsMembershipPrice = '';
+            }
+
             ensureDirectory(dirname($configFile));
             ensureDirectory($defaultProjectDir);
 
@@ -116,6 +138,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'language' => 'en',
                     'tips' => true,
                     'updater' => false,
+                ],
+                'membership' => [
+                    'enabled' => $vippsEnabled,
+                    'provider' => 'vipps',
+                    'vipps' => [
+                        'merchantSerialNumber' => $vippsMerchantSerial,
+                        'clientId' => $vippsClientId,
+                        'clientSecret' => $vippsClientSecret,
+                        'membershipPrice' => $vippsMembershipPrice,
+                    ],
                 ],
                 'adminPassword' => password_hash($password, PASSWORD_BCRYPT),
                 'installed' => true,
@@ -395,10 +427,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="step-indicator" data-step="2">
           <div class="step-number">2</div>
-          <div>Sett opp standardprosjekt</div>
+          <div>Vipps medlemskap</div>
         </div>
         <div class="step-indicator" data-step="3">
           <div class="step-number">3</div>
+          <div>Sett opp standardprosjekt</div>
+        </div>
+        <div class="step-indicator" data-step="4">
+          <div class="step-number">4</div>
           <div>Ferdig</div>
         </div>
       </div>
@@ -424,14 +460,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="wizard-step" data-step="2">
           <div class="wizard-panel">
-            <h2>Oppretter standardprosjekt</h2>
-            <p>Installerer Fjolsenbanden-demoen og oppretter filstrukturen.</p>
-            <ul class="checklist">
-              <li><span class="check-icon">✔</span>Standard prosjekt installert</li>
-              <li><span class="check-icon">✔</span>Fjolsenbanden-demo importert</li>
-              <li><span class="check-icon">✔</span>Filstruktur opprettet</li>
-              <li><span class="check-icon">✔</span>Media-bibliotek initialisert</li>
-            </ul>
+            <h2>Vipps medlemskap</h2>
+            <p>Sett opp Vipps mobilbetaling for medlemskap (valgfritt).</p>
+            <div class="form-field">
+              <label for="vipps_enable">
+                <input type="checkbox" id="vipps_enable" name="vipps_enable" />
+                Aktiver Vipps-medlemskap
+              </label>
+            </div>
+            <div class="form-field">
+              <label for="vipps_merchant">Merchant Serial Number</label>
+              <input type="text" id="vipps_merchant" name="vipps_merchant" placeholder="f.eks. 123456" />
+            </div>
+            <div class="form-field">
+              <label for="vipps_client_id">Client ID</label>
+              <input type="text" id="vipps_client_id" name="vipps_client_id" placeholder="Utviklerportalens Client ID" />
+            </div>
+            <div class="form-field">
+              <label for="vipps_client_secret">Client Secret</label>
+              <input type="password" id="vipps_client_secret" name="vipps_client_secret" placeholder="Hemmelige nøkkelen" />
+            </div>
+            <div class="form-field">
+              <label for="vipps_membership_price">Medlemspris (NOK per mnd)</label>
+              <input type="text" id="vipps_membership_price" name="vipps_membership_price" placeholder="Eks: 99" />
+            </div>
             <div class="wizard-actions">
               <button class="btn btn-secondary" data-prev="1" type="button">Tilbake</button>
               <button class="btn btn-primary" data-next="3" type="button">Fortsett →</button>
@@ -441,10 +493,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="wizard-step" data-step="3">
           <div class="wizard-panel">
+            <h2>Oppretter standardprosjekt</h2>
+            <p>Installerer Fjolsenbanden-demoen og oppretter filstrukturen.</p>
+            <ul class="checklist">
+              <li><span class="check-icon">✔</span>Standard prosjekt installert</li>
+              <li><span class="check-icon">✔</span>Fjolsenbanden-demo importert</li>
+              <li><span class="check-icon">✔</span>Filstruktur opprettet</li>
+              <li><span class="check-icon">✔</span>Media-bibliotek initialisert</li>
+            </ul>
+            <div class="wizard-actions">
+              <button class="btn btn-secondary" data-prev="2" type="button">Tilbake</button>
+              <button class="btn btn-primary" data-next="4" type="button">Fortsett →</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="wizard-step" data-step="4">
+          <div class="wizard-panel">
             <h2>Streamer Site Builder er klart!</h2>
             <p>Trykk på knappen under for å starte editoren.</p>
             <div class="wizard-actions">
-              <button class="btn btn-secondary" data-prev="2" type="button">Tilbake</button>
+              <button class="btn btn-secondary" data-prev="3" type="button">Tilbake</button>
               <button class="btn btn-primary" type="submit">Start visual editor</button>
             </div>
           </div>
@@ -472,6 +541,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function handleNext(targetStep) {
       const password = document.getElementById('password');
       const confirm = document.getElementById('confirm_password');
+      const vippsEnabled = document.getElementById('vipps_enable');
+      const vippsMerchant = document.getElementById('vipps_merchant');
+      const vippsClientId = document.getElementById('vipps_client_id');
+      const vippsClientSecret = document.getElementById('vipps_client_secret');
+      const vippsMembershipPrice = document.getElementById('vipps_membership_price');
 
       if (Number(targetStep) === 2) {
         if (!password.value || !confirm.value) {
@@ -481,6 +555,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (password.value !== confirm.value) {
           alert('Passordene må være like.');
+          return;
+        }
+      }
+
+      if (Number(targetStep) === 3 && vippsEnabled.checked) {
+        if (!vippsMerchant.value || !vippsClientId.value || !vippsClientSecret.value) {
+          alert('Fyll ut alle Vipps-feltene eller skru av medlemskap.');
+          return;
+        }
+
+        if (vippsMembershipPrice.value && isNaN(Number(vippsMembershipPrice.value))) {
+          alert('Medlemspris må være et tall (NOK).');
           return;
         }
       }

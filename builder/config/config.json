@@ -16,6 +16,16 @@
     "tips": true,
     "updater": false
   },
+  "membership": {
+    "enabled": false,
+    "provider": "vipps",
+    "vipps": {
+      "merchantSerialNumber": "",
+      "clientId": "",
+      "clientSecret": "",
+      "membershipPrice": ""
+    }
+  },
   "adminPassword": "",
   "installed": false,
   "firstRun": true
