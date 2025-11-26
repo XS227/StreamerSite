@@ -1,0 +1,18 @@
+{
+  "projectName": "Streamer Site Builder",
+  "defaultProject": "projects/default/template",
+  "language": "en",
+  "publishPath": "public",
+  "assetPaths": {
+    "css": "css",
+    "js": "js",
+    "images": "images"
+  },
+  "googleFonts": [],
+  "pageContainer": "body",
+  "systemSettings": {
+    "language": "en",
+    "tips": true,
+    "updater": false
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Fjolsenbanden",
+  "homePage": "index.html",
+  "pages": [
+    {
+      "id": "index",
+      "title": "Home",
+      "file": "index.html",
+      "isHome": true,
+      "preview": "../.streamer/previews/index.png"
+    }
+  ]
+}

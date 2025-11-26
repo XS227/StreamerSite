@@ -1,0 +1,269 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body.ssb-body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #222;
+  background: #f4f5f7;
+}
+
+/* Top bar */
+.ssb-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: #111827;
+  color: #f9fafb;
+}
+
+.ssb-logo {
+  font-weight: 600;
+}
+
+.ssb-breadcrumbs {
+  flex: 1;
+  margin: 0 16px;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.ssb-topbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ssb-mode-switcher {
+  display: inline-flex;
+  background: #1f2937;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ssb-mode-btn {
+  border: none;
+  background: transparent;
+  color: #d1d5db;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ssb-mode-btn--active {
+  background: #2563eb;
+  color: #f9fafb;
+}
+
+.ssb-btn,
+.ssb-icon-btn {
+  border: none;
+  background: #374151;
+  color: #f9fafb;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.ssb-btn-primary {
+  background: #10b981;
+}
+
+/* Layout */
+.ssb-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: calc(100vh - 48px);
+}
+
+.ssb-sidebar {
+  border-right: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.ssb-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.ssb-panel {
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: #f9fafb;
+  padding: 8px;
+}
+
+.ssb-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+/* Canvas and resizer */
+.ssb-resizer {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  display: flex;
+  gap: 4px;
+}
+
+.ssb-resizer-btn {
+  border: none;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.ssb-resizer-btn--active {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.ssb-canvas-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 8px;
+}
+
+.ssb-canvas {
+  flex: 1;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Dev toolbar */
+.ssb-dev-toolbar {
+  height: 200px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+}
+
+.ssb-dev-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px 8px;
+}
+
+.ssb-dev-tab {
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: #e5e7eb;
+  cursor: pointer;
+}
+
+.ssb-dev-tab--active {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.ssb-dev-panels {
+  flex: 1;
+  padding: 4px 8px 8px;
+}
+
+.ssb-dev-editor {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 6px;
+  resize: none;
+}
+
+.ssb-dev-panel {
+  width: 100%;
+  height: 100%;
+}
+
+/* Main menu overlay */
+.ssb-main-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.ssb-main-menu-inner {
+  width: 720px;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+.ssb-main-menu-header {
+  grid-column: 1 / -1;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ssb-main-menu-items {
+  border-right: 1px solid #e5e7eb;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ssb-main-menu-items > button {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.ssb-main-menu-content {
+  padding: 8px;
+  overflow-y: auto;
+}
+
+/* Utilities */
+.ssb-link {
+  background: none;
+  border: none;
+  color: #93c5fd;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.ssb-input {
+  width: 100%;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+}
+
+.ssb-hidden {
+  display: none !important;
+}
