@@ -1,43 +1,1002 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fjolsenbanden – Streamer Site Builder Demo</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Fjolsenbanden – Streamer Crew</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Basic styles (you can move this to css/main.css later) -->
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --bg-darker: #020617;
+      --bg-section: #020617;
+      --bg-alt: #020617;
+      --accent: #f97316;
+      --accent-soft: rgba(249,115,22,0.12);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: #1f2937;
+      --radius-lg: 18px;
+      --radius-xl: 999px;
+      --shadow-soft: 0 18px 45px rgba(15,23,42,0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 50%);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page-wrap {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #111827 0, #020617 60%);
+    }
+
+    .site-shell {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* Header / Nav */
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, #f97316, #991b1b);
+      box-shadow: 0 0 24px rgba(248,113,113,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148,163,184,0.18);
+      padding: 4px 6px;
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-link {
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+    }
+
+    .nav-link--active {
+      background: rgba(248,250,252,0.08);
+      color: var(--text-main);
+    }
+
+    .nav-cta {
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f97316, #fb7185);
+      border: none;
+      color: #0f172a;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 14px 32px rgba(248,113,22,0.55);
+      font-size: 13px;
+    }
+
+    /* Hero */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+      align-items: stretch;
+    }
+
+    .hero-main {
+      background: radial-gradient(circle at top left, #111827 0, #020617 70%);
+      border-radius: 22px;
+      padding: 22px 20px 20px;
+      border: 1px solid rgba(148,163,184,0.18);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.7);
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--text-muted);
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+
+    .hero-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,0.8);
+    }
+
+    .hero-title {
+      font-size: clamp(26px, 4vw, 32px);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 36rem;
+      margin-bottom: 14px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .btn-primary {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #f97316, #facc15);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #0b1120;
+      box-shadow: 0 14px 32px rgba(249,115,22,0.50);
+    }
+
+    .btn-outline {
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.4);
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .hero-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.7);
+      border: 1px solid rgba(55,65,81,0.8);
+    }
+
+    .hero-art {
+      position: absolute;
+      right: -40px;
+      bottom: -50px;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #fb7185, #7e22ce);
+      filter: blur(6px);
+      opacity: 0.6;
+    }
+
+    .hero-main-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badges-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .badge-soft {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.7);
+      border: 1px solid rgba(55,65,81,0.8);
+      color: var(--text-muted);
+    }
+
+    .badge-soft--accent {
+      border-color: rgba(249,115,22,0.7);
+      background: rgba(249,115,22,0.08);
+      color: #fed7aa;
+    }
+
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.25);
+      background: rgba(15,23,42,0.9);
+      padding: 13px;
+      box-shadow: 0 12px 30px rgba(15,23,42,0.7);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(220,38,38,0.12);
+      color: #fecaca;
+      font-size: 10px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ef4444;
+      box-shadow: 0 0 10px rgba(239,68,68,0.9);
+    }
+
+    .episode-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .episode-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 6px;
+      border-radius: 10px;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .episode-main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .episode-title {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .episode-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .episode-tag {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(55,65,81,0.9);
+    }
+
+    /* Section layout */
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+      gap: 18px;
+    }
+
+    .ssb-section {
+      border-radius: 20px;
+      border: 1px solid rgba(148,163,184,0.2);
+      background: rgba(15,23,42,0.92);
+      padding: 18px 16px;
+      box-shadow: 0 12px 32px rgba(15,23,42,0.7);
+      margin-top: 16px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .section-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(55,65,81,0.9);
+      color: var(--text-muted);
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .ssb-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .p-small {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .list-soft {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .list-soft li {
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: rgba(15,23,42,0.94);
+      border: 1px solid rgba(31,41,55,0.9);
+    }
+
+    /* Shows grid */
+
+    .shows-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .show-card {
+      border-radius: 14px;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(31,41,55,0.9);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .show-thumb {
+      height: 80px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 20% 20%, #22c55e, #0ea5e9);
+    }
+
+    .show-title {
+      font-weight: 500;
+    }
+
+    .show-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Gallery */
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 6px;
+    }
+
+    .gallery-item {
+      height: 70px;
+      border-radius: 9px;
+      background: radial-gradient(circle at 20% 20%, #f97316, #0ea5e9);
+    }
+
+    /* Merch */
+
+    .merch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(150px, 1fr));
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .merch-card {
+      border-radius: 14px;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(31,41,55,0.9);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .merch-thumb {
+      height: 80px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 20% 20%, #fbbf24, #f97316);
+    }
+
+    .merch-label {
+      font-weight: 500;
+    }
+
+    .merch-price {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Contact */
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .contact-form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .field-input,
+    .field-textarea {
+      border-radius: 9px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: rgba(15,23,42,0.9);
+      padding: 7px 8px;
+      color: var(--text-main);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .field-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .contact-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: grid;
+      gap: 6px;
+    }
+
+    .contact-item {
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: rgba(15,23,42,0.94);
+      border: 1px solid rgba(31,41,55,0.9);
+    }
+
+    .contact-item-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .contact-item-value {
+      font-size: 12px;
+    }
+
+    /* Footer */
+
+    .site-footer {
+      margin-top: 26px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(31,41,55,0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Responsive tweaks */
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .main-grid {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .hero-side {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .main-nav {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .hero-main {
+        padding: 18px 16px 18px;
+      }
+      .hero-art {
+        display: none;
+      }
+      .ssb-section {
+        padding: 14px 12px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header class="hero section">
-    <div class="container">
-      <h1 data-ssb-editable="true">Fjolsenbanden</h1>
-      <p data-ssb-editable="true">This is the default template bundled with Streamer Site Builder. Replace these sections with your own fjolsenbanden markup.</p>
-      <button class="cta" data-ssb-editable="true">Explore</button>
-    </div>
-  </header>
+  <div class="page-wrap">
+    <div class="site-shell">
+      <!-- HEADER / NAV -->
+      <header class="site-header">
+        <a href="#top" class="brand">
+          <div class="brand-logo">
+            <span data-ssb-editable>F</span>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name" data-ssb-editable>Fjolsenbanden</span>
+            <span class="brand-tagline" data-ssb-editable>
+              Kaos, humor & gaming – live hver uke
+            </span>
+          </div>
+        </a>
 
-  <main>
-    <section class="section">
-      <div class="container grid">
-        <article class="column">
-          <h2 data-ssb-editable="true">Built for editing</h2>
-          <p data-ssb-editable="true">Use Edit mode for inline content tweaks, Design mode to adjust HTML/CSS/JS, and Preview mode to see the final page.</p>
-        </article>
-        <article class="column">
-          <h2 data-ssb-editable="true">Layered structure</h2>
-          <p data-ssb-editable="true">Sections, columns, and content follow the layer rules defined in the builder configuration.</p>
-        </article>
-        <article class="column">
-          <h2 data-ssb-editable="true">Replace with fjolsenbanden</h2>
-          <p data-ssb-editable="true">Swap this placeholder content with your real fjolsenbanden HTML to ship with the builder.</p>
-        </article>
+        <nav class="main-nav">
+          <button class="nav-link nav-link--active" data-ssb-editable>Hjem</button>
+          <button class="nav-link" data-ssb-editable>Om oss</button>
+          <button class="nav-link" data-ssb-editable>Episoder</button>
+          <button class="nav-link" data-ssb-editable>Galleri</button>
+          <button class="nav-link" data-ssb-editable>Merch</button>
+          <button class="nav-link" data-ssb-editable>Kontakt</button>
+          <button class="nav-cta" data-ssb-editable>Se neste stream</button>
+        </nav>
+      </header>
+
+      <!-- HERO -->
+      <section class="hero ssb-section" id="top">
+        <div class="hero-main ssb-column">
+          <div class="hero-main-inner">
+            <div class="hero-pill">
+              <span class="hero-pill-dot"></span>
+              <span data-ssb-editable>Live hver torsdag kl. 20:00</span>
+            </div>
+
+            <h1 class="hero-title" data-ssb-editable>
+              Fjolsenbanden – streamer gjengen som aldri holder kjeft
+            </h1>
+
+            <p class="hero-subtitle" data-ssb-editable>
+              Fire venner, én altfor høy lydnivå. Gaming, IRL-streams, gjester og
+              fullstendig ufiltrerte øyeblikk – direkte fra sofaen til skjermen din.
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn-primary" data-ssb-editable>
+                Følg oss på Twitch
+              </button>
+              <button class="btn-outline" data-ssb-editable>
+                Se siste høydepunkter
+              </button>
+            </div>
+
+            <div class="hero-meta-row">
+              <div class="hero-meta-pill">
+                <span data-ssb-editable>🎮 Spillkveld hver uke</span>
+              </div>
+              <div class="hero-meta-pill">
+                <span data-ssb-editable>🎤 Live chat & Q&amp;A</span>
+              </div>
+              <div class="hero-meta-pill">
+                <span data-ssb-editable>📺 Multistream på flere plattformer</span>
+              </div>
+            </div>
+
+            <div class="hero-badges-row">
+              <span class="badge-soft badge-soft--accent" data-ssb-editable>
+                +2 500 faste seere
+              </span>
+              <span class="badge-soft" data-ssb-editable>
+                3 sesonger med kaos
+              </span>
+              <span class="badge-soft" data-ssb-editable>
+                Norsk &amp; engelsk
+              </span>
+            </div>
+          </div>
+          <div class="hero-art"></div>
+        </div>
+
+        <aside class="hero-side">
+          <div class="card">
+            <div class="card-title" data-ssb-editable>
+              Neste sendte stream
+            </div>
+            <div class="card-subtitle" data-ssb-editable>
+              Oppdatér tidspunkt og tittel rett i editoren
+            </div>
+            <div class="live-indicator">
+              <span class="live-dot"></span>
+              <span data-ssb-editable>NESTE: Torsdag 20:00</span>
+            </div>
+            <ul class="episode-list">
+              <li class="episode-item">
+                <div class="episode-main">
+                  <span class="episode-title" data-ssb-editable>
+                    Ranked kaos i Valorant
+                  </span>
+                  <span class="episode-meta" data-ssb-editable>
+                    Gjester: Random queue | 2t+
+                  </span>
+                </div>
+                <span class="episode-tag" data-ssb-editable>Planlagt</span>
+              </li>
+              <li class="episode-item">
+                <div class="episode-main">
+                  <span class="episode-title" data-ssb-editable>
+                    Chat bestemmer straffen
+                  </span>
+                  <span class="episode-meta" data-ssb-editable>
+                    Community night | 1,5t
+                  </span>
+                </div>
+                <span class="episode-tag" data-ssb-editable>Spesial</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title" data-ssb-editable>Streaming-plan</div>
+            <div class="card-subtitle" data-ssb-editable>
+              Rask oversikt du kan justere når som helst
+            </div>
+            <ul class="list-soft">
+              <li data-ssb-editable>Onsdag – Clutch &amp; fails</li>
+              <li data-ssb-editable>Torsdag – Main show &amp; gjester</li>
+              <li data-ssb-editable>Søndag – Chill &amp; IRL</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      <!-- MAIN GRID: OM OSS / SHOWS -->
+      <div class="main-grid">
+        <!-- OM OSS -->
+        <section class="ssb-section" id="om-oss">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title" data-ssb-editable>Om Fjolsenbanden</h2>
+              <p class="section-tag" data-ssb-editable>
+                Kort om hvem vi er – rett fra kjelleren til streaming-verden
+              </p>
+            </div>
+            <span class="section-pill" data-ssb-editable>4 faste fjols</span>
+          </div>
+
+          <div class="two-cols">
+            <div class="ssb-column">
+              <p class="p-small" data-ssb-editable>
+                Fjolsenbanden er en liten men høylytt norsk streaming-gjeng som
+                elsker spill, dårlig timing og intern humor. Vi kjører faste livesendinger,
+                community-kvelder og spontane «vi-burde-ikke-gjort-dette»-streams.
+              </p>
+              <p class="p-small" data-ssb-editable>
+                Alt styres fra stua – kamera, lys og lyd er satt opp akkurat bra nok til
+                at det kan gå galt når som helst. Chatten er en viktig del av showet,
+                og vi elsker å dra dere med inn i kaoset.
+              </p>
+            </div>
+            <div class="ssb-column">
+              <ul class="list-soft">
+                <li data-ssb-editable>🎧 Sjanger: Gaming, IRL, talkshow</li>
+                <li data-ssb-editable>🌍 Språk: Norsk (og litt engelsk kaos)</li>
+                <li data-ssb-editable>💥 Fokus: Chill stemning, høyt nivå av fjasing</li>
+                <li data-ssb-editable>👥 Community: Discord, giveaways &amp; events</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- SHOWS / EPISODER -->
+        <section class="ssb-section" id="episoder">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title" data-ssb-editable>
+                Shows &amp; faste formater
+              </h2>
+              <p class="section-tag" data-ssb-editable>
+                Standardoppsett for episodene dine – bare bytt navn og innhold
+              </p>
+            </div>
+            <span class="section-pill" data-ssb-editable>3 hovedformater</span>
+          </div>
+
+          <div class="shows-grid">
+            <article class="show-card">
+              <div class="show-thumb"></div>
+              <div class="show-title" data-ssb-editable>Main Show – Torsdagskaos</div>
+              <div class="show-meta" data-ssb-editable>
+                Hovedsending med gjester, konkurranser og overload på interne vitser.
+              </div>
+            </article>
+
+            <article class="show-card">
+              <div class="show-thumb"></div>
+              <div class="show-title" data-ssb-editable>Ranked Rage Night</div>
+              <div class="show-meta" data-ssb-editable>
+                Vi prøver å ta spillet seriøst. Det går sånn passe. Klippene lever evig.
+              </div>
+            </article>
+
+            <article class="show-card">
+              <div class="show-thumb"></div>
+              <div class="show-title" data-ssb-editable>Chill &amp; IRL</div>
+              <div class="show-meta" data-ssb-editable>
+                Sofaprat, Q&amp;A og litt for ærlige historier mens vi scroller internett.
+              </div>
+            </article>
+          </div>
+        </section>
       </div>
-    </section>
-  </main>
 
-  <footer class="section footer">
-    <div class="container">
-      <p data-ssb-editable="true">© Streamer Site Builder – Demo placeholder for fjolsenbanden.</p>
+      <!-- GALLERY + MERCH -->
+      <section class="ssb-section" id="galleri">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" data-ssb-editable>Galleri &amp; klipp</h2>
+            <p class="section-tag" data-ssb-editable>
+              Bytt ut disse med egne skjermbilder fra streamen eller behind-the-scenes
+            </p>
+          </div>
+          <span class="section-pill" data-ssb-editable>Høydepunkter</span>
+        </div>
+
+        <div class="two-cols">
+          <div class="ssb-column">
+            <div class="gallery-grid">
+              <div class="gallery-item"></div>
+              <div class="gallery-item"></div>
+              <div class="gallery-item"></div>
+              <div class="gallery-item"></div>
+              <div class="gallery-item"></div>
+              <div class="gallery-item"></div>
+            </div>
+          </div>
+          <div class="ssb-column">
+            <p class="p-small" data-ssb-editable>
+              Her kan du legge inn thumbnails fra YouTube, Twitch-klipp eller bare
+              screenshots fra chatten. Tanken er at besøkende raskt skal forstå
+              hva slags energi dere har på stream.
+            </p>
+            <p class="p-small" data-ssb-editable>
+              Bruk bildebiblioteket i Streamer Site Builder for å bytte ut alt med
+              egne bilder på noen sekunder.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="ssb-section" id="merch">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" data-ssb-editable>Merch &amp; støtte</h2>
+            <p class="section-tag" data-ssb-editable>
+              Lag din egen lille merch-vegg eller støtte-seksjon
+            </p>
+          </div>
+          <span class="section-pill" data-ssb-editable>Valgfritt</span>
+        </div>
+
+        <div class="merch-grid">
+          <article class="merch-card">
+            <div class="merch-thumb"></div>
+            <div class="merch-label" data-ssb-editable>Fjolsenbanden hoodie</div>
+            <div class="merch-price" data-ssb-editable>Fra 499,- · Print-on-demand</div>
+          </article>
+
+          <article class="merch-card">
+            <div class="merch-thumb"></div>
+            <div class="merch-label" data-ssb-editable>Kaos-mode caps</div>
+            <div class="merch-price" data-ssb-editable>Begrenset opplag · 299,-</div>
+          </article>
+
+          <article class="merch-card">
+            <div class="merch-thumb"></div>
+            <div class="merch-label" data-ssb-editable>Støtt streamen</div>
+            <div class="merch-price" data-ssb-editable>
+              Donasjoner, Patreon eller Twitch-subs – du velger
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="ssb-section" id="kontakt">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" data-ssb-editable>Kontakt &amp; samarbeid</h2>
+            <p class="section-tag" data-ssb-editable>
+              Samarbeid, spons eller bare en hyggelig melding – alt starter her
+            </p>
+          </div>
+          <span class="section-pill" data-ssb-editable>La oss prate</span>
+        </div>
+
+        <div class="contact-grid">
+          <form class="contact-form">
+            <div class="field">
+              <label class="field-label" data-ssb-editable>Navn</label>
+              <input class="field-input" type="text" placeholder="Ditt navn" />
+            </div>
+            <div class="field">
+              <label class="field-label" data-ssb-editable>E-post</label>
+              <input class="field-input" type="email" placeholder="din@mail.no" />
+            </div>
+            <div class="field">
+              <label class="field-label" data-ssb-editable>Melding</label>
+              <textarea class="field-textarea" placeholder="Hva gjelder det?"></textarea>
+            </div>
+            <button class="btn-primary" type="submit" data-ssb-editable>
+              Send melding
+            </button>
+          </form>
+
+          <div class="contact-meta">
+            <div class="contact-item">
+              <div class="contact-item-label" data-ssb-editable>E-post</div>
+              <div class="contact-item-value" data-ssb-editable>
+                kontakt@fjolsenbanden.no
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-label" data-ssb-editable>Sosiale medier</div>
+              <div class="contact-item-value" data-ssb-editable>
+                Twitch · YouTube · TikTok · Instagram
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-label" data-ssb-editable>Business / samarbeid</div>
+              <div class="contact-item-value" data-ssb-editable>
+                Legg inn lenke til mediekit eller agent her
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div data-ssb-editable>
+          © Fjolsenbanden – bygget med Streamer Site Builder
+        </div>
+        <div class="footer-links">
+          <a href="#top" data-ssb-editable>Til toppen</a>
+          <a href="#" data-ssb-editable>Personvern</a>
+          <a href="#" data-ssb-editable>Cookies</a>
+        </div>
+      </footer>
     </div>
-  </footer>
+  </div>
 </body>
 </html>
