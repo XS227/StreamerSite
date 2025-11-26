@@ -1,0 +1,16 @@
+{
+  "ui": {
+    "save": "Save project",
+    "publish": "Publish",
+    "pages": "Pages",
+    "presets": "Presets",
+    "mediaLibrary": "Media Library",
+    "iconsManager": "Icons Manager",
+    "importTemplate": "Import Template",
+    "importProject": "Import Project",
+    "exportTemplate": "Export Template",
+    "exportProject": "Export Project",
+    "seo": "SEO",
+    "security": "Security"
+  }
+}

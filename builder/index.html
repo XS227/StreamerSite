@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Streamer Site Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="ssb-body">
+  <!-- Top Bar -->
+  <header class="ssb-topbar">
+    <div class="ssb-logo">Streamer Site Builder</div>
+
+    <nav class="ssb-breadcrumbs">
+      <span id="ssb-current-project">Fjolsenbanden</span>
+      <span>/</span>
+      <button id="ssb-open-page-manager" class="ssb-link">
+        Pages
+      </button>
+    </nav>
+
+    <div class="ssb-topbar-controls">
+      <div class="ssb-mode-switcher">
+        <button data-mode="edit" class="ssb-mode-btn ssb-mode-btn--active">Edit</button>
+        <button data-mode="design" class="ssb-mode-btn">Design</button>
+        <button data-mode="preview" class="ssb-mode-btn">Preview</button>
+      </div>
+      <button id="ssb-save-project" class="ssb-btn ssb-btn-primary">Save project</button>
+      <button id="ssb-publish-project" class="ssb-btn">Publish</button>
+      <button id="ssb-main-menu-toggle" class="ssb-icon-btn">☰</button>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="ssb-layout">
+    <!-- Sidebar: Page Manager & Tools -->
+    <aside class="ssb-sidebar">
+      <section class="ssb-panel">
+        <header class="ssb-panel-header">
+          <h2>Pages</h2>
+          <button id="ssb-add-page" class="ssb-icon-btn">＋</button>
+        </header>
+        <div id="ssb-pages-list" class="ssb-pages-list">
+          <!-- Filled by JS -->
+        </div>
+      </section>
+
+      <section class="ssb-panel">
+        <header class="ssb-panel-header">
+          <h2>Presets</h2>
+        </header>
+        <input id="ssb-preset-search" class="ssb-input" placeholder="Search presets…" />
+        <div id="ssb-presets-list" class="ssb-presets-list">
+          <!-- Filled by JS -->
+        </div>
+      </section>
+    </aside>
+
+    <!-- Visual Editor Area -->
+    <main class="ssb-main">
+      <!-- Resolution Preview Tool -->
+      <div class="ssb-resizer">
+        <button data-size="fullhd" class="ssb-resizer-btn ssb-resizer-btn--active">Desktop</button>
+        <button data-size="notebook" class="ssb-resizer-btn">Notebook</button>
+        <button data-size="tablet-landscape" class="ssb-resizer-btn">Tablet ⟂</button>
+        <button data-size="tablet-portrait" class="ssb-resizer-btn">Tablet ⟂</button>
+        <button data-size="mobile-landscape" class="ssb-resizer-btn">Mobile ⟂</button>
+        <button data-size="mobile-portrait" class="ssb-resizer-btn">Mobile ⟂</button>
+      </div>
+
+      <div class="ssb-canvas-wrapper">
+        <!-- We load the current page into an iframe like Novi -->
+        <iframe id="ssb-canvas" class="ssb-canvas"></iframe>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bottom Developer Toolbar (Design Mode) -->
+  <footer class="ssb-dev-toolbar">
+    <div class="ssb-dev-tabs">
+      <button data-dev-tab="html" class="ssb-dev-tab ssb-dev-tab--active">HTML</button>
+      <button data-dev-tab="css" class="ssb-dev-tab">CSS</button>
+      <button data-dev-tab="js" class="ssb-dev-tab">JS</button>
+      <button data-dev-tab="presets" class="ssb-dev-tab">Presets</button>
+      <button data-dev-tab="plugins" class="ssb-dev-tab">Plugins</button>
+      <button data-dev-tab="styles-manager" class="ssb-dev-tab">Style Manager</button>
+    </div>
+    <div class="ssb-dev-panels">
+      <textarea id="ssb-dev-html" class="ssb-dev-editor"></textarea>
+      <textarea id="ssb-dev-css" class="ssb-dev-editor ssb-hidden"></textarea>
+      <textarea id="ssb-dev-js" class="ssb-dev-editor ssb-hidden"></textarea>
+      <div id="ssb-dev-presets" class="ssb-dev-panel ssb-hidden"></div>
+      <div id="ssb-dev-plugins" class="ssb-dev-panel ssb-hidden"></div>
+      <div id="ssb-dev-styles-manager" class="ssb-dev-panel ssb-hidden"></div>
+    </div>
+  </footer>
+
+  <!-- Main Menu (Configuration, Import/Export, Media Library, SEO, Icons, etc.) -->
+  <div id="ssb-main-menu" class="ssb-main-menu ssb-hidden">
+    <div class="ssb-main-menu-inner">
+      <header class="ssb-main-menu-header">
+        <h2>Streamer Site Builder</h2>
+        <button id="ssb-main-menu-close" class="ssb-icon-btn">✕</button>
+      </header>
+      <nav class="ssb-main-menu-items">
+        <button data-menu="project-settings">Project Settings</button>
+        <button data-menu="system-settings">System Settings</button>
+        <button data-menu="media-library">Media Library</button>
+        <button data-menu="icons-manager">Icons Manager</button>
+        <button data-menu="import-template">Import Template</button>
+        <button data-menu="import-project">Import Project</button>
+        <button data-menu="export-template">Export Template</button>
+        <button data-menu="export-project">Export Project</button>
+        <button data-menu="seo">SEO</button>
+        <button data-menu="security">Security</button>
+      </nav>
+      <div id="ssb-main-menu-content" class="ssb-main-menu-content">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="builder.js"></script>
+</body>
+</html>

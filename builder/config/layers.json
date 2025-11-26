@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Section",
+    "element": "section, .section",
+    "canBeInsertedTo": "body, main",
+    "description": "Top-level layout sections"
+  },
+  {
+    "name": "Column",
+    "element": ".column, [class*=col-]",
+    "canBeInsertedTo": "section, .section",
+    "description": "Grid columns inside a section"
+  },
+  {
+    "name": "Content",
+    "element": "p, h1, h2, h3, h4, h5, h6, ul, ol, li, img, button, a",
+    "canBeInsertedTo": ".column, [class*=col-]",
+    "description": "Basic content elements"
+  }
+]
