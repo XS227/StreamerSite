@@ -1,13 +1,14 @@
 {
   "name": "Fjolsenbanden",
   "homePage": "index.html",
+  "templatePath": "projects/default/template",
   "pages": [
     {
       "id": "index",
       "title": "Home",
       "file": "index.html",
       "isHome": true,
-      "preview": "../.streamer/previews/index.png"
+      "preview": ".streamer/previews/index.png"
     }
   ]
 }
