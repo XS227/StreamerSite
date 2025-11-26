@@ -1,3 +1,34 @@
+<?php
+$baseDir = __DIR__;
+$configFile = $baseDir . "/config/config.json";
+$config = file_exists($configFile)
+    ? json_decode(file_get_contents($configFile), true)
+    : [];
+
+if (!is_array($config)) {
+    $config = [];
+}
+
+$defaultProjectPath = $config['defaultProject'] ?? 'projects/default/template';
+$projectDirectory = dirname($defaultProjectPath);
+$projectJsonPath = $baseDir . '/' . ($config['projectMeta'] ?? ($projectDirectory . '/project.json'));
+$projectTemplatePath = $baseDir . '/' . $defaultProjectPath;
+$streamerDirectory = $baseDir . '/' . $projectDirectory . '/.streamer';
+
+$needsInstall = !file_exists($configFile)
+    || empty($config['adminPassword'])
+    || !is_dir($projectTemplatePath)
+    || !file_exists($projectJsonPath)
+    || !is_dir($streamerDirectory)
+    || !isset($config['installed'])
+    || $config['installed'] !== true
+    || ($config['firstRun'] ?? true) === true;
+
+if ($needsInstall) {
+    header('Location: first-run.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
